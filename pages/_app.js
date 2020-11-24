@@ -1,14 +1,16 @@
 import React from "react";
 import '../styles/globals.css'
 import Header from "../src/components/Header";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallback from "../src/components/ErrorFallback";
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   return (
-    <>
-      <Header />
-      <Component {...pageProps} />
-      </>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Header />
+        <Component {...pageProps} />
+      </ErrorBoundary>
     )
 }
 
-export default MyApp
+export default App

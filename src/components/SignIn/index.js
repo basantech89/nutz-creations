@@ -11,13 +11,16 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {PasswordRegex} from "../../constants/regex";
 
 function Copyright() {
 	return (
 		<Typography variant="body2" color="textSecondary" align="center">
 			{'Copyright © '}
-			<Link color="inherit" href="https://material-ui.com/">
-				Your Website
+			<Link color="inherit" href="https://github.com/instigence/konfirmity">
+				Instigence
 			</Link>{' '}
 			{new Date().getFullYear()}
 			{'.'}
@@ -56,8 +59,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const initialValues = { email: '', password: '' }
+
+const validationSchema = Yup.object({
+	email: Yup.string()
+		.required("Email is required")
+		.email("Invalid email address"),
+	password: Yup.string()
+		.required("Password is required")
+		.min(8, "Password is too short, it must contain at least 8 characters")
+		.matches(PasswordRegex, {
+			message:
+				"Password must contain at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 symbol",
+		}),
+});
+
+const onSubmit = (creds, actions) => {
+	alert(creds)
+	console.log(creds)
+}
+
 export default function SignIn() {
 	const classes = useStyles();
+
+	const formik = useFormik({
+		initialValues,
+		validationSchema,
+		onSubmit
+	})
 
 	return (
 		<Grid container component="main" className={classes.root}>
@@ -70,7 +99,7 @@ export default function SignIn() {
 					<Typography component="h1" variant="h5">
 						Sign in
 					</Typography>
-					<form className={classes.form} noValidate>
+					<form className={classes.form} onSubmit={formik.handleSubmit}>
 						<TextField
 							variant="outlined"
 							margin="normal"
@@ -81,6 +110,9 @@ export default function SignIn() {
 							name="email"
 							autoComplete="email"
 							autoFocus
+							{...formik.getFieldProps('email')}
+							error={!!formik.errors.email}
+							helperText={formik.errors.email}
 						/>
 						<TextField
 							variant="outlined"
@@ -92,6 +124,9 @@ export default function SignIn() {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							{...formik.getFieldProps('password')}
+							error={!!formik.errors.password}
+							helperText={formik.errors.password}
 						/>
 						<FormControlLabel
 							control={<Checkbox value="remember" color="primary" />}
