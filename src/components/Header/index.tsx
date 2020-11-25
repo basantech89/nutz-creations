@@ -9,7 +9,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import {AccountCircle} from "@material-ui/icons";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import {getItem, isAuthenticated, setItem} from "../../utils/common";
+import {isAuthenticated, setItem} from "../../utils/common";
 import {useRouter} from "next/router";
 import {useStyles} from "./style";
 
@@ -36,6 +36,7 @@ export default function Header() {
 
 	const logout = () => {
 		setItem('token', '')
+		setItem('user',  '')
 		handleClose()
 		router.push('/signin')
 	}
