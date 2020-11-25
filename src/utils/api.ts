@@ -1,6 +1,6 @@
 const constructUrl = (url: string) => {
-	if (process.env.REACT_APP_API_BASE) {
-		return `${process.env.REACT_APP_API_BASE}${url}`
+	if (process.env.NEXT_PUBLIC_API_BASE) {
+		return `${process.env.NEXT_PUBLIC_API_BASE}${url}`
 	}
 	return url
 }
@@ -20,7 +20,7 @@ export const get = async <K> (url: string, headers?: object) => {
 export const post = async <K> (url: string, data: Object, headers?: any) => {
 	try {
 		console.log(constructUrl(url))
-		const response = await fetch('http://localhost:3000/api/login', {
+		const response = await fetch(constructUrl(url), {
 			method: 'post',
 			headers: { "Content-Type": "application/json", ...headers },
 			body: JSON.stringify(data)
