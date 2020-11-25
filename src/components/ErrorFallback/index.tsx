@@ -1,8 +1,9 @@
 import React from 'react'
 import { useErrorFallbackStyles } from './style'
 import { Typography } from '@material-ui/core'
+import {FallbackProps} from "react-error-boundary";
 
-const ErrorFallback = ({ error }) => {
+const ErrorFallback: React.FC<FallbackProps> = ({ error }) => {
 	const classes = useErrorFallbackStyles()
 
 	if (error) {

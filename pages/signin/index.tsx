@@ -4,60 +4,22 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {PasswordRegex} from "../../constants/regex";
-
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://github.com/instigence/konfirmity">
-				Instigence
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		height: 'calc(100vh - 64px)',
-	},
-	image: {
-		backgroundImage: 'url(https://source.unsplash.com/random)',
-		backgroundRepeat: 'no-repeat',
-		backgroundColor:
-			theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-		backgroundSize: 'cover',
-		backgroundPosition: 'center',
-	},
-	paper: {
-		margin: theme.spacing(8, 4),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing(1),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
+import {PasswordRegex} from "../../src/constants/regex";
+import { post } from "../../src/utils/api";
+import {useAppDispatch} from "../../src/store";
+import { addUser } from '../../src/store/state/user'
+import {useStyles} from "./style";
+import {setItem} from "../../src/utils/common";
+import {useRouter} from "next/router";
+import {Copyright} from "@material-ui/icons";
+import {Link} from "@material-ui/core";
 
 const initialValues = { email: '', password: '' }
 
@@ -74,13 +36,22 @@ const validationSchema = Yup.object({
 		}),
 });
 
-const onSubmit = (creds, actions) => {
-	alert(creds)
-	console.log(creds)
-}
-
 export default function SignIn() {
 	const classes = useStyles();
+	const dispatch = useAppDispatch()
+	const router = useRouter()
+
+	const onSubmit = async (creds, actions) => {
+		actions.setSubmitting(true)
+		const data: any =  await post('/login', creds)
+		if (data.token) {
+			setItem('token', data.token)
+			setItem('user', creds.email)
+			dispatch(addUser({ email: creds.email }))
+			router.push('/profile')
+		}
+		actions.setSubmitting(false)
+	}
 
 	const formik = useFormik({
 		initialValues,
@@ -128,10 +99,10 @@ export default function SignIn() {
 							error={!!formik.errors.password}
 							helperText={formik.errors.password}
 						/>
-						<FormControlLabel
-							control={<Checkbox value="remember" color="primary" />}
-							label="Remember me"
-						/>
+						{/*<FormControlLabel*/}
+						{/*	control={<Checkbox value="remember" color="primary" />}*/}
+						{/*	label="Remember me"*/}
+						{/*/>*/}
 						<Button
 							type="submit"
 							fullWidth
@@ -142,13 +113,13 @@ export default function SignIn() {
 							Sign In
 						</Button>
 						<Grid container>
-							<Grid item xs>
-								<Link href="#" variant="body2">
-									Forgot password?
-								</Link>
-							</Grid>
+							{/*<Grid item xs>*/}
+							{/*	<Link href="#" variant="body2">*/}
+							{/*		Forgot password?*/}
+							{/*	</Link>*/}
+							{/*</Grid>*/}
 							<Grid item>
-								<Link href="#" variant="body2">
+								<Link href="/signup" variant="body2">
 									{"Don't have an account? Sign Up"}
 								</Link>
 							</Grid>
@@ -160,5 +131,5 @@ export default function SignIn() {
 				</div>
 			</Grid>
 		</Grid>
-	);
+	)
 }
