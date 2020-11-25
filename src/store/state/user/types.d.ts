@@ -1,8 +1,7 @@
-import { SerializedError } from '@reduxjs/toolkit'
-import { TStatus } from '../types'
 
 declare interface IUser {
-	name?: string
+	firstName: string
+	lastName?: string
 	email: string
 }
 

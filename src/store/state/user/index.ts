@@ -1,20 +1,16 @@
-import {createSlice, nanoid, PayloadAction} from '@reduxjs/toolkit'
-import {IUser, IUserState} from "./types";
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {IUser} from "./types";
 
-const initialState: IUser = { name: '', email: '' }
+const initialState: IUser = { firstName: '', lastName: '', email: '' }
 
 const commonSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		addUser: {
-			reducer: (state, action: PayloadAction<IUser>) => {
-				state.name = action.payload.name
-				state.email = action.payload.email
-			},
-			prepare: (user: IUser) => {
-				return { payload: { id: nanoid(), ...user } }
-			}
+		addUser: (state, action: PayloadAction<IUser>) => {
+			state.firstName = action.payload.firstName
+			state.lastName = action.payload.lastName
+			state.email = action.payload.email
 		}
 	}
 })
