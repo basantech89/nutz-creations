@@ -21,11 +21,6 @@ import {CircularProgress, Snackbar} from "@material-ui/core";
 import MuiAlert, {AlertProps, Color} from "@material-ui/lab/Alert";
 import {makeStyles} from "@material-ui/core/styles";
 
-declare interface IFeedback {
-	message: string
-	variant: Color
-}
-
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -72,7 +67,7 @@ export default function SignUp() {
 	const router = useRouter()
 	const { status, error } = useSelector((state: RootState) => state.common)
 
-	const [feedback, setFeedback] = React.useState<IFeedback>({ message: '', variant: 'success' })
+	const [submitError, setSubmitError] = React.useState('')
 	const [open, setOpen] = React.useState(false);
 	const handleClick = () => {
 		setOpen(true);
@@ -86,7 +81,7 @@ export default function SignUp() {
 
 	const onSubmit = async (creds, actions) => {
 		actions.setSubmitting(true)
-		const { success, data, error }: any =  await post('/user', {
+		const { success, data, error }: any =  await post('/api/user', {
 			first_name: creds.firstName,
 			last_name: creds.lastName,
 			email: creds.email,
@@ -97,10 +92,10 @@ export default function SignUp() {
 		if (success) {
 			setItem('token', data.token)
 			setItem('user', user)
-			router.push('/signin')
+			router.push('/api/signin')
 		} else {
 			handleClick()
-			setFeedback({ message: error.message, variant: 'error' })
+			setSubmitError(error)
 		}
 		actions.setSubmitting(false)
 	}
@@ -204,8 +199,8 @@ export default function SignUp() {
 					<Copyright/>
 				</Box>
 				<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-					<Alert onClose={handleClose} severity={feedback.variant}>
-						{feedback.message}
+					<Alert onClose={handleClose} severity='error'>
+						{submitError}
 					</Alert>
 				</Snackbar>
 			</Container>
