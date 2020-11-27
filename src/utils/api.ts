@@ -18,8 +18,7 @@ export const get = async <K> (url: string, headers?: object) => {
 		store.dispatch(statusResolved())
 		return await response.json() as K
 	} catch (e) {
-		store.dispatch(statusRejected(e.message))
-		throw new Error(e)
+		store.dispatch(statusRejected(e))
 	}
 }
 
@@ -34,7 +33,6 @@ export const post = async <K> (url: string, data: Object, headers?: any) => {
 		store.dispatch(statusResolved())
 		return await response.json() as K
 	} catch (e) {
-		store.dispatch(statusRejected(e.message))
-		throw new Error(e)
+		store.dispatch(statusRejected(e))
 	}
 }

@@ -92,7 +92,7 @@ export default function SignIn() {
 
 	const onSubmit = async (creds, actions) => {
 		actions.setSubmitting(true)
-		const { success, error, data }: any =  await post('/login', creds)
+		const { success, error, data }: any =  await post('/api/login', creds)
 		if (success) {
 			const user = { email: data.email, firstName: data.firstName, lastName: data.lastName }
 			setItem('token', data.token)
