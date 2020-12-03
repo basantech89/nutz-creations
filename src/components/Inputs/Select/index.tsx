@@ -32,7 +32,12 @@ const Select: React.FC<ISelectProps> = ({
       value={value}
       onChange={handleChange}
       renderInput={(params) => (
-        <TextField {...params} label={label} margin='normal' />
+        <TextField
+          {...params}
+          label={label}
+          margin='normal'
+          style={{ marginTop: 0 }}
+        />
       )}
     />
   )

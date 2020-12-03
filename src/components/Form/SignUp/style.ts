@@ -2,12 +2,15 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useSignUpStyles = makeStyles((theme) => ({
   formContainer: {
-    marginTop: theme.spacing(3)
+    margin: theme.spacing(3, 0)
   },
   textField: {
     maxWidth: '45%'
   },
   tabs: {
+    '& .MuiTabs-flexContainer': {
+      justifyContent: 'space-between'
+    },
     '& .MuiTabs-indicator': {
       display: 'none'
     },
@@ -31,5 +34,8 @@ export const useSignUpStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 5
+  },
+  tabPanel: {
+    padding: '20px 40px 0 10px'
   }
 }))

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext js,jsx,ts,tsx ./src",
-    "lint:fix": "eslint --ext js,jsx,ts,tsx --fix ./src"
+    "lint:fix": "eslint --ext js,jsx,ts,tsx --fix ./src",
+    "migrate": "node scripts/migrate-db.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^1.0.1",

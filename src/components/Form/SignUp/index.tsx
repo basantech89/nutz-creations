@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Grid,
-  Paper,
-  Snackbar,
-  Tab,
-  Tabs,
-  Typography
-} from '@material-ui/core'
-import TableContext from '@material-ui/core/Table/TableContext'
+import { Grid, Paper, Snackbar, Tab, Typography } from '@material-ui/core'
 import { TabContext, TabList, TabPanel } from '@material-ui/lab'
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 import React from 'react'
@@ -58,6 +49,34 @@ export default function SignUp() {
     </div>
   )
 
+  const handleSubmit = () => {
+    // const { success, data, error }: any = await post('/api/user', {
+    //   first_name: details.firstName,
+    //   last_name: details.lastName,
+    //   email: details.email,
+    //   password: details.password
+    // })
+    //
+    // const user = {
+    //   email: details.email,
+    //   firstName: details.firstName,
+    //   lastName: details.lastName
+    // }
+    // if (success) {
+    //   setItem('token', data.token)
+    //   setItem('user', user)
+    //   router.push('/signin')
+    // } else {
+    //   handleClick()
+    //   // setSubmitError(error)
+    // }
+  }
+
+  const handlePersonalDetails = (details) => {
+    console.log(details)
+    setValue('2')
+  }
+
   return (
     <Grid container component='main' className={classes.root}>
       <Grid item xs={false} sm={4} md={6} className={classes.image} />
@@ -95,13 +114,13 @@ export default function SignUp() {
                   {...a11yProps(2)}
                 />
               </TabList>
-              <TabPanel value='1' style={{ padding: '0 40px 0 10px' }}>
-                <PersonalDetails onOpen={setOpen} />
+              <TabPanel value='1' className={signupClasses.tabPanel}>
+                <PersonalDetails onSubmit={handlePersonalDetails} />
               </TabPanel>
-              <TabPanel value='2' style={{ padding: '0 40px 0 10px' }}>
+              <TabPanel value='2' className={signupClasses.tabPanel}>
                 <CompanyDetails />
               </TabPanel>
-              <TabPanel value='3' style={{ padding: '0 40px 0 10px' }}>
+              <TabPanel value='3' className={signupClasses.tabPanel}>
                 <InformationSecurity />
               </TabPanel>
             </TabContext>

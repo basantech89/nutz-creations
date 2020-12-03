@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import mongoose from 'mongoose'
 import { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect'
 
+import { query } from '../../../lib/db'
 import User from '../../../models/User'
 import dbConnect from '../../../src/utils/dbConnect'
 
@@ -28,44 +28,49 @@ const handler = nc()
           .json({ success: false, error: 'Pl send user information' })
       }
 
-      await dbConnect()
+      const result = await query(
+        `
+        SELECT email from users WHERE email = ?
+      `,
+        req.body.email
+      )
 
-      User.find({ email: req.body.email })
-        .exec()
-        .then((users) => {
-          if (users.length > 0) {
-            return res
-              .status(409)
-              .send({ success: false, error: 'User already exists' })
-          } else {
-            bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
-              if (error) {
-                return res
-                  .status(406)
-                  .json({ success: false, error: error.message })
-              } else {
-                const user = new User({
-                  id: new mongoose.Types.ObjectId(),
-                  email: req.body.email,
-                  password: hashedPassword,
-                  first_name: req.body.first_name,
-                  last_name: req.body.last_name
-                })
-                user
-                  .save()
-                  .then((data) => {
-                    res.status(201).json({ success: true, data })
-                  })
-                  .catch((error) => {
-                    res
-                      .status(406)
-                      .json({ success: false, error: error.message })
-                  })
-              }
-            })
-          }
-        })
-        .catch()
+      // User.find({ email: req.body.email })
+      //   .exec()
+      //   .then((users) => {
+      //     if (users.length > 0) {
+      //       return res
+      //         .status(409)
+      //         .send({ success: false, error: 'User already exists' })
+      //     } else {
+      //       bcrypt.hash(req.body.password, 10, (error, hashedPassword) => {
+      //         if (error) {
+      //           return res
+      //             .status(406)
+      //             .json({ success: false, error: error.message })
+      //         } else {
+      //           const user = new User({
+      //             id: new mongoose.Types.ObjectId(),
+      //             email: req.body.email,
+      //             password: hashedPassword,
+      //             first_name: req.body.first_name,
+      //             last_name: req.body.last_name
+      //           })
+      //           user
+      //             .save()
+      //             .then((data) => {
+      //               res.status(201).json({ success: true, data })
+      //             })
+      //             .catch((error) => {
+      //               res
+      //                 .status(406)
+      //                 .json({ success: false, error: error.message })
+      //             })
+      //         }
+      //       })
+      //     }
+      //   })
+      //   .catch()
     } catch (error) {
       res.status(500).json({ success: false, error: error.message })
     }

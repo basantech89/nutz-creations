@@ -32,6 +32,10 @@ export const useFormStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
+    height: 'calc(100vh - 23rem)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     '& .MuiFormLabel-root': {
       fontFamily: 'Poppins'
     }
@@ -53,7 +57,7 @@ export const useFormStyles = makeStyles((theme) => ({
   submit: {
     paddingTop: 10,
     paddingBottom: 10,
-    margin: theme.spacing(10, 0, 4, 0),
+    margin: theme.spacing(7, 0, 3, 0),
     width: 170,
     textTransform: 'unset',
     fontSize: '1rem',

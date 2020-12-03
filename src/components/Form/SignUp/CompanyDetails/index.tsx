@@ -1,11 +1,7 @@
-import { Button, Grid, Link, TextField } from '@material-ui/core'
-import { useRouter } from 'next/router'
+import { Box, Button, Grid, Link, TextField } from '@material-ui/core'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { emailRegex, passwordRegex } from '../../../../constants/regex'
-import { post } from '../../../../utils/api'
-import { setItem } from '../../../../utils/common'
 import Select from '../../../Inputs/Select'
 import { ISelectOption } from '../../../Inputs/Select/types'
 import { useFormStyles } from '../../style'
@@ -26,35 +22,9 @@ const companyTypeOptions = [
 
 const CompanyDetails: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<ICompanyDetailsForm>()
-  const router = useRouter()
   const classes = useFormStyles()
 
-  const handleClick = () => {
-    // props.onOpen(true)
-  }
-
-  const onSubmit = async (creds) => {
-    const { success, data, error }: any = await post('/api/user', {
-      first_name: creds.firstName,
-      last_name: creds.lastName,
-      email: creds.email,
-      password: creds.password
-    })
-
-    const user = {
-      email: creds.email,
-      firstName: creds.firstName,
-      lastName: creds.lastName
-    }
-    if (success) {
-      setItem('token', data.token)
-      setItem('user', user)
-      router.push('/signin')
-    } else {
-      handleClick()
-      // setSubmitError(error)
-    }
-  }
+  const onSubmit = async (details) => {}
 
   const handleCompanyType = (selectedOption: ISelectOption | null) => {
     console.log(selectedOption)
@@ -116,7 +86,12 @@ const CompanyDetails: React.FC = () => {
           />
         </Grid>
       </Grid>
-      <Grid container justify='center'>
+      <Box
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+        alignItems='center'
+      >
         <Button
           type='submit'
           fullWidth
@@ -126,12 +101,10 @@ const CompanyDetails: React.FC = () => {
         >
           Next
         </Button>
-      </Grid>
-      <Grid container justify='center'>
-        <Link href='/signin' variant='body2' style={{ fontFamily: 'Poppins' }}>
+        <Link href='/signin' variant='body2'>
           Already have an account? Sign in.
         </Link>
-      </Grid>
+      </Box>
     </form>
   )
 }
