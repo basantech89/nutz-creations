@@ -1,10 +1,12 @@
 import { Box, Button, Grid, Link, TextField } from '@material-ui/core'
+import clsx from 'clsx'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import Select from '../../../Inputs/Select'
 import { ISelectOption } from '../../../Inputs/Select/types'
 import { useFormStyles } from '../../style'
+import { useSignUpStyles } from '../style'
 
 declare interface ICompanyDetailsForm {
   name: string
@@ -23,6 +25,7 @@ const companyTypeOptions = [
 const CompanyDetails: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<ICompanyDetailsForm>()
   const classes = useFormStyles()
+  const signupClasses = useSignUpStyles()
 
   const onSubmit = async (details) => {}
 
@@ -31,7 +34,10 @@ const CompanyDetails: React.FC = () => {
   }
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={clsx(classes.form, signupClasses.form)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
