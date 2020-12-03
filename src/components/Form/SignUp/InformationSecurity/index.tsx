@@ -6,6 +6,7 @@ import {
   TextField,
   Typography
 } from '@material-ui/core'
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -76,7 +77,10 @@ const InformationSecurity: React.FC = () => {
   }
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={clsx(classes.form, signupClasses.form)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box>
         <Box display='flex' justifyContent='space-between'>
           <Select
