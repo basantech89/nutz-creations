@@ -17,7 +17,8 @@ export const useFormStyles = makeStyles((theme) => ({
   title: {
     fontFamily: 'Montserrat',
     color: '#43425D',
-    fontWeight: 500
+    fontWeight: 500,
+    marginBottom: 10
   },
   subTitle: {
     '& div': {
@@ -32,7 +33,6 @@ export const useFormStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    height: 'calc(100vh - 23rem)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',

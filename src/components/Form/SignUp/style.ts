@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 export const useSignUpStyles = makeStyles((theme) => ({
+  form: {
+    height: 'calc(100vh - 23rem)'
+  },
   formContainer: {
     margin: theme.spacing(3, 0)
   },

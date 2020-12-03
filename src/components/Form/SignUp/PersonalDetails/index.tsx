@@ -1,9 +1,11 @@
 import { Box, Button, Grid, Link, TextField } from '@material-ui/core'
+import clsx from 'clsx'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import { emailRegex, passwordRegex } from '../../../../constants/regex'
 import { useFormStyles } from '../../style'
+import { useSignUpStyles } from '../style'
 
 declare interface IPersonalDetailsForm {
   firstName: string
@@ -25,9 +27,13 @@ const PersonalDetails: React.FC<IPersonalDetailsProps> = (props) => {
     errors
   } = useForm<IPersonalDetailsForm>()
   const classes = useFormStyles()
+  const signupClasses = useSignUpStyles()
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(props.onSubmit)}>
+    <form
+      className={clsx(classes.form, signupClasses.form)}
+      onSubmit={handleSubmit(props.onSubmit)}
+    >
       <Box display='flex' flexDirection='column' justifyContent='space-between'>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} style={{ paddingRight: 50 }}>
