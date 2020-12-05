@@ -1,8 +1,18 @@
 import { red } from '@material-ui/core/colors'
 import { createMuiTheme } from '@material-ui/core/styles'
 
-// Create a theme instance.
+import colors from './colors'
+import { IThemeOptions } from './types'
+
+const extended = {
+  Header: {
+    background: `linear-gradient(${colors.blue.dark}, ${colors.blue.medium})`,
+    border: `1px solid ${colors.white.main}`
+  }
+}
+
 const theme = createMuiTheme({
+  name: 'dark',
   palette: {
     primary: {
       main: '#43425D'
@@ -31,7 +41,8 @@ const theme = createMuiTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"'
     ].join(',')
-  }
-})
+  },
+  cfg: extended
+} as IThemeOptions)
 
 export default theme

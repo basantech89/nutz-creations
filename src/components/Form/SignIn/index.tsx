@@ -13,6 +13,7 @@ import {
 import { Copyright } from '@material-ui/icons'
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
 import { useRouter } from 'next/router'
+import { signIn, signOut, useSession } from 'next-auth/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -53,22 +54,23 @@ export default function SignIn() {
   const goToSignup = () => router.push('/signup')
 
   const onSubmit = async (creds) => {
-    console.log('submit', creds, errors)
-    const { success, error, data } = await post('/api/login', creds)
-    if (success) {
-      const user = {
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName
-      }
-      setItem('token', data.token)
-      setItem('user', user)
-      dispatch(addUser(user))
-      router.push('/profile')
-    } else {
-      handleClick()
-      setSubmitError(error)
-    }
+    const res = await signIn()
+    console.log(res)
+    // const { success, error, data } = await post('/api/login', creds)
+    // if (success) {
+    //   const user = {
+    //     email: data.email,
+    //     firstName: data.firstName,
+    //     lastName: data.lastName
+    //   }
+    //   setItem('token', data.token)
+    //   setItem('user', user)
+    //   dispatch(addUser(user))
+    //   router.push('/profile')
+    // } else {
+    //   handleClick()
+    //   setSubmitError(error)
+    // }
   }
 
   return (
@@ -80,7 +82,7 @@ export default function SignIn() {
           style={{ marginLeft: 240, marginRight: 240 }}
         >
           <Typography className={classes.title} component='h1' variant='h2'>
-            Konfirmity
+            Nutz Creations
           </Typography>
           <Typography className={classes.subTitle} variant='subtitle1'>
             <div> We help growing companies manage compliance, </div>

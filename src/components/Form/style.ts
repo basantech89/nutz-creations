@@ -27,7 +27,7 @@ export const useFormStyles = makeStyles((theme) => ({
     }
   },
   paper: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(20),
     display: 'flex',
     flexDirection: 'column'
   },

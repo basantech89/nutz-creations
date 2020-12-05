@@ -1,36 +1,46 @@
-import { Grid, Paper, Snackbar, Tab, Typography } from '@material-ui/core'
-import { TabContext, TabList, TabPanel } from '@material-ui/lab'
+import {
+  Box,
+  Button,
+  Grid,
+  Link,
+  Paper,
+  Snackbar,
+  TextField,
+  Typography
+} from '@material-ui/core'
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert'
+import clsx from 'clsx'
 import React from 'react'
+import { useForm } from 'react-hook-form'
 
+import { emailRegex, passwordRegex } from '../../../constants/regex'
 import { useFormStyles } from '../style'
-import CompanyDetails from './CompanyDetails'
-import InformationSecurity from './InformationSecurity'
-import PersonalDetails from './PersonalDetails'
+
 import { useSignUpStyles } from './style'
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant='filled' {...props} />
 }
 
-function a11yProps(index: any) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
-  }
+declare interface IPersonalDetailsForm {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  confirmedPassword: string
 }
 
 export default function SignUp() {
   const classes = useFormStyles()
   const signupClasses = useSignUpStyles()
-
   // const dispatch = useAppDispatch()
 
-  const [value, setValue] = React.useState('1')
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    setValue(newValue)
-  }
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    errors
+  } = useForm<IPersonalDetailsForm>()
 
   const [submitError, setSubmitError] = React.useState('')
   const [open, setOpen] = React.useState(false)
@@ -42,14 +52,7 @@ export default function SignUp() {
     setOpen(false)
   }
 
-  const TabLabel = ({ index, name }) => (
-    <div>
-      <span className={signupClasses.tabLabel}>{index}</span>
-      <span> {name} </span>
-    </div>
-  )
-
-  const handleSubmit = () => {
+  const handleSignup = () => {
     // const { success, data, error }: any = await post('/api/user', {
     //   first_name: details.firstName,
     //   last_name: details.lastName,
@@ -72,11 +75,6 @@ export default function SignUp() {
     // }
   }
 
-  const handlePersonalDetails = (details) => {
-    console.log(details)
-    setValue('2')
-  }
-
   return (
     <Grid container component='main' className={classes.root}>
       <Grid item xs={false} sm={4} md={6} className={classes.image} />
@@ -86,45 +84,116 @@ export default function SignUp() {
           style={{ marginLeft: 140, marginRight: 100 }}
         >
           <Typography className={classes.title} component='h1' variant='h2'>
-            Konfirmity
+            Nutz Creations
           </Typography>
           <Typography className={classes.subTitle} variant='subtitle1'>
             <div> Sign up to your account </div>
           </Typography>
-          <div className={signupClasses.formContainer}>
-            <TabContext value={value}>
-              <TabList
-                onChange={handleChange}
-                aria-label='sign up tabs'
-                className={signupClasses.tabs}
+          <form
+            className={clsx(classes.form, signupClasses.form)}
+            onSubmit={handleSubmit(handleSignup)}
+          >
+            <Box
+              display='flex'
+              flexDirection='column'
+              justifyContent='space-between'
+            >
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6} style={{ paddingRight: 50 }}>
+                  <TextField
+                    name='firstName'
+                    fullWidth
+                    id='firstName'
+                    label='First Name'
+                    inputRef={register({ required: 'First Name is required' })}
+                    error={!!errors?.firstName?.message}
+                    helperText={errors?.firstName?.message}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} style={{ paddingLeft: 50 }}>
+                  <TextField
+                    fullWidth
+                    id='lastName'
+                    label='Last Name'
+                    name='lastName'
+                    inputRef={register}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id='email'
+                    label='Email'
+                    name='email'
+                    inputRef={register({
+                      required: 'Email is required',
+                      pattern: {
+                        value: emailRegex,
+                        message: 'Invalid Email Address'
+                      }
+                    })}
+                    error={!!errors?.email?.message}
+                    helperText={errors?.email?.message}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name='password'
+                    label='Password'
+                    type='password'
+                    id='password'
+                    inputRef={register({
+                      required: 'Password is required',
+                      pattern: {
+                        value: passwordRegex,
+                        message:
+                          'Password must be between 4 and 8 digits long and include at least one numeric digit'
+                      }
+                    })}
+                    error={!!errors?.password?.message}
+                    helperText={errors?.password?.message}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    name='confirmedPassword'
+                    label='Confirm Password'
+                    type='password'
+                    id='confirmedPassword'
+                    inputRef={register({
+                      required: 'Password is required',
+                      validate: (value) =>
+                        value === getValues('password') ||
+                        "Password don't match"
+                    })}
+                    error={!!errors?.confirmedPassword?.message}
+                    helperText={errors?.confirmedPassword?.message}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+            <Box
+              display='flex'
+              flexDirection='column'
+              justifyContent='center'
+              alignItems='center'
+            >
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={classes.submit}
               >
-                <Tab
-                  value='1'
-                  label={<TabLabel index='01' name='Personal Details' />}
-                  {...a11yProps(0)}
-                />
-                <Tab
-                  value='2'
-                  label={<TabLabel index='02' name='Company Details' />}
-                  {...a11yProps(1)}
-                />
-                <Tab
-                  value='3'
-                  label={<TabLabel index='03' name='Information Security' />}
-                  {...a11yProps(2)}
-                />
-              </TabList>
-              <TabPanel value='1' className={signupClasses.tabPanel}>
-                <PersonalDetails onSubmit={handlePersonalDetails} />
-              </TabPanel>
-              <TabPanel value='2' className={signupClasses.tabPanel}>
-                <CompanyDetails />
-              </TabPanel>
-              <TabPanel value='3' className={signupClasses.tabPanel}>
-                <InformationSecurity />
-              </TabPanel>
-            </TabContext>
-          </div>
+                Next
+              </Button>
+              <Link href='/signin' variant='body2'>
+                Already have an account? Sign in.
+              </Link>
+            </Box>
+          </form>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity='error'>
               {submitError}
