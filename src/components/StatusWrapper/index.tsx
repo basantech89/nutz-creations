@@ -4,7 +4,11 @@ import { useSelector } from 'react-redux'
 
 import { RootState } from '../../store'
 
-const StatusWrapper: React.FC = (props) => {
+declare interface IStatusWrapperProps {
+  children: React.ReactElement
+}
+
+const StatusWrapper: React.FC<IStatusWrapperProps> = (props) => {
   const { status, error } = useSelector((state: RootState) => state.common)
 
   if (status === 'resolved' || status === 'idle') {
